@@ -222,8 +222,7 @@ const GT={
   '팰월드':'#3B6D11','엘든링':'#854F0B','다크앤다커':'#5F5E5A','CS2':'#993C1D','e-sports':'#A32D2D'
 };
 
-const servers=[];
-
+let servers=[];
 let aGame='전체',aVibe='전체',aPurpose='전체';
 
 function buildChips(){
@@ -319,7 +318,31 @@ async function submitForm(){
 
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-buildChips();render();
+async function loadServers(){
+  const count=document.getElementById('countLabel');
+  count.textContent='서버 목록 불러오는 중...';
+  try{
+    const res=await fetch(SHEET_URL);
+    const data=await res.json();
+    const iconMap={'롤':'🎮','배그':'🔫','FC':'⚽','로아':'⚔️','발로':'🎯','오버':'🛡️','메이플':'🍁','던파':'👊','스타':'🌟','에이펙스':'💥','원신':'🌙','블루아카':'🌸','팰월드':'🌿','엘든링':'🗡️','다크앤다커':'🔪','CS2':'🎯','e-sports':'🏆'};
+    servers=data.map(s=>({
+      featured:false,
+      icon:iconMap[s.game]||'🎮',
+      game:s.game,purpose:s.purpose,vibe:s.vibe,
+      name:s.name,desc:s.desc,link:s.link,
+      tags:s.tags?s.tags.split(',').map(t=>t.trim()).filter(Boolean):[],
+      members:''
+    }));
+    render();
+  }catch(e){
+    count.textContent='';
+    const em=document.getElementById('emptyMsg');
+    em.style.display='block';
+    em.innerHTML='서버 목록을 불러오지 못했어요 😢<br><span style="font-size:12px;">잠시 후 새로고침 해주세요.</span>';
+  }
+}
+
+buildChips();loadServers();
 </script>
 </body>
 </html>
