@@ -200,7 +200,7 @@ a{color:inherit;text-decoration:none;}
 <!-- 푸터 -->
 <div class="footer">
   파티구함 · 게임 디스코드 서버 디렉토리<br>
-  서버 등록 문의 · 광고 문의: partyguhham@gmail.com<br>
+  서버 등록 문의 · 광고 문의: jangshm@naver.com<br>
   <span style="font-size:11px;margin-top:4px;display:block;">© 2025 파티구함. 디스코드와 무관한 독립 서비스입니다.</span>
 </div>
 
@@ -222,24 +222,7 @@ const GT={
   '팰월드':'#3B6D11','엘든링':'#854F0B','다크앤다커':'#5F5E5A','CS2':'#993C1D','e-sports':'#A32D2D'
 };
 
-const servers=[
-  {featured:true,icon:'🎮',game:'롤',vibe:'일반계',purpose:'파티 구함',name:'롤 즐겜 파티방',desc:'욕설 없는 건전한 파티 서버. 칼바람부터 랭크까지 같이해요.',tags:['즐겜','칼바람','음성채팅'],members:'2,841',link:'https://discord.gg/example'},
-  {featured:false,icon:'📺',game:'롤',vibe:'일반계',purpose:'같이 보기',name:'LCK 같이보기',desc:'LCK, LCS, 롤드컵 등 e스포츠 방송 같이 봐요. 실시간 채팅 활발.',tags:['LCK','롤드컵','e스포츠'],members:'1,543',link:'https://discord.gg/example'},
-  {featured:false,icon:'🏆',game:'e-sports',vibe:'빡겜계',purpose:'e-sports',name:'한국 e스포츠 허브',desc:'롤, 발로, 오버워치 리그 전부 다룸. 경기 결과 알림 및 분석.',tags:['LCK','VCT','OWL','분석'],members:'3,201',link:'https://discord.gg/example'},
-  {featured:false,icon:'🔫',game:'배그',vibe:'빡겜계',purpose:'파티 구함',name:'배그 빡겜 스쿼드',desc:'치킨 먹으러 온 분들만. 매일 저녁 스크림 운영.',tags:['스크림','스쿼드','전략'],members:'1,203',link:'https://discord.gg/example'},
-  {featured:false,icon:'⚽',game:'FC',vibe:'디씨계',purpose:'정보 공유',name:'FC갤 공식 디코',desc:'FC 갤 이용자 모임. 이적시장 루머부터 빌드 토론까지.',tags:['이적시장','빌드','디씨'],members:'987',link:'https://discord.gg/example'},
-  {featured:false,icon:'📡',game:'발로',vibe:'일반계',purpose:'같이 보기',name:'VCT 같이보기 서버',desc:'VCT 퍼시픽, 챔피언스 같이 봐요. 경기 예측 이벤트도 해요.',tags:['VCT','발로란트','e스포츠'],members:'876',link:'https://discord.gg/example'},
-  {featured:false,icon:'⚔️',game:'로아',vibe:'빡겜계',purpose:'파티 구함',name:'로아 레이드 공략단',desc:'어비 이상 레이드 파티 빠르게 구해요. 공대장 경험자 우대.',tags:['레이드','어비','파티'],members:'3,412',link:'https://discord.gg/example'},
-  {featured:false,icon:'🎯',game:'발로',vibe:'친목계',purpose:'친목',name:'발로 친목 파티',desc:'골드~플 구간 같이 즐겜해요. 음채 필수, 욕설 금지.',tags:['음채','친목','골드-플'],members:'654',link:'https://discord.gg/example'},
-  {featured:false,icon:'🌸',game:'블루아카',vibe:'일반계',purpose:'정보 공유',name:'블루 아카이브 정보',desc:'공략, 이벤트 정보, 덕질까지. 선생님들 모두 환영.',tags:['공략','이벤트','덕질'],members:'1,102',link:'https://discord.gg/example'},
-  {featured:false,icon:'🌟',game:'스타',vibe:'디씨계',purpose:'같이 보기',name:'스타 ASL 같이보기',desc:'ASL, GSL 방송 같이 봐요. 스타1 래더도 같이 해요.',tags:['ASL','GSL','스타1'],members:'341',link:'https://discord.gg/example'},
-  {featured:false,icon:'💥',game:'에이펙스',vibe:'빡겜계',purpose:'파티 구함',name:'에이펙스 빡겜방',desc:'프레데터 도전 중. 파티 구하고 보이스 연습해요.',tags:['프레데터','파티'],members:'489',link:'https://discord.gg/example'},
-  {featured:false,icon:'🌿',game:'팰월드',vibe:'친목계',purpose:'친목',name:'팰월드 같이해요',desc:'멀티 서버 같이 운영해요. 초보 환영, 팰 교환도 해요.',tags:['멀티','팰교환','초보'],members:'762',link:'https://discord.gg/example'},
-  {featured:false,icon:'📺',game:'오버',vibe:'방송계',purpose:'같이 보기',name:'오버워치 리그 같이보기',desc:'OWL 및 국내 대회 방송 같이 봐요. 팀 응원방 채널 분리.',tags:['OWL','방송','응원'],members:'1,890',link:'https://discord.gg/example'},
-  {featured:false,icon:'🗡️',game:'엘든링',vibe:'일반계',purpose:'파티 구함',name:'엘든링 공략 길드',desc:'협동, 침입, 보스 공략. 방치형 분들도 질문 환영.',tags:['공략','협동','침입'],members:'533',link:'https://discord.gg/example'},
-  {featured:false,icon:'🔪',game:'다크앤다커',vibe:'빡겜계',purpose:'파티 구함',name:'다크앤다커 레이드',desc:'HR 탈출 위주. 파티 빠르게 구하고 전략 공유해요.',tags:['HR','탈출','파티'],members:'298',link:'https://discord.gg/example'},
-  {featured:false,icon:'🍁',game:'메이플',vibe:'일반계',purpose:'정보 공유',name:'메이플 정보 서버',desc:'보스 파티, 큐브 시세, 이벤트 정보 공유. 조용한 서버.',tags:['보스','시세','이벤트'],members:'2,200',link:'https://discord.gg/example'},
-];
+const servers=[];
 
 let aGame='전체',aVibe='전체',aPurpose='전체';
 
@@ -294,9 +277,46 @@ function render(){
   document.getElementById('emptyMsg').style.display=shown===0?'block':'none';
 }
 
+const SHEET_URL='YOUR_APPS_SCRIPT_URL';
+
 function openModal(){document.getElementById('modal').classList.add('open');}
 function closeModal(){document.getElementById('modal').classList.remove('open');}
-function submitForm(){alert('등록 신청 완료!\n검토 후 24시간 내 게시됩니다.');closeModal();}
+
+async function submitForm(){
+  const inputs=document.querySelectorAll('#modal input');
+  const selects=document.querySelectorAll('#modal select');
+  const textarea=document.querySelector('#modal textarea');
+  const name=inputs[0].value.trim();
+  const game=selects[0].value;
+  const purpose=selects[1].value;
+  const vibe=selects[2].value;
+  const desc=textarea.value.trim();
+  const link=inputs[1].value.trim();
+  const tags=inputs[2].value.trim();
+
+  if(!name){alert('서버 이름을 입력해주세요.');return;}
+  if(!link.startsWith('https://discord.gg/')){alert('디스코드 초대링크를 올바르게 입력해주세요.\n예: https://discord.gg/abcdef');return;}
+  if(!desc){alert('서버 소개를 입력해주세요.');return;}
+
+  const btn=document.querySelector('.btn-submit');
+  btn.textContent='전송 중...';btn.disabled=true;
+
+  try{
+    await fetch(SHEET_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,game,purpose,vibe,desc,link,tags,date:new Date().toLocaleString('ko-KR')})
+    });
+    alert('등록 신청 완료!\n검토 후 24시간 내 게시됩니다. 감사합니다 🙌');
+    closeModal();
+    document.querySelectorAll('#modal input,#modal textarea').forEach(el=>el.value='');
+  }catch(e){
+    alert('오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+  }finally{
+    btn.textContent='등록 신청';btn.disabled=false;
+  }
+}
+
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
 buildChips();render();
