@@ -136,7 +136,7 @@ a{color:inherit;text-decoration:none;}
           <option>메이플스토리</option><option>던전앤파이터</option><option>스타크래프트</option>
           <option>에이펙스 레전드</option><option>원신</option><option>블루아카이브</option>
           <option>팰월드</option><option>엘든링</option><option>다크앤다커</option><option>CS2</option>
-          <option>e-sports (게임 무관)</option><option>기타</option>
+          <option>e-sports (게임 무관)</option><option>스팀</option><option>기타</option>
         </select>
       </div>
       <div class="form-group"><label>서버 목적</label>
@@ -157,11 +157,36 @@ a{color:inherit;text-decoration:none;}
   </div>
 </div>
 
+<!-- 신고 모달 -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal">
+    <h2>신고 / 문의하기</h2>
+    <div class="form-group"><label>유형</label>
+      <select id="reportType">
+        <option>허위 서버 신고</option>
+        <option>스팸/도배 신고</option>
+        <option>불량 링크 신고</option>
+        <option>서버 정보 수정 요청</option>
+        <option>기타 문의</option>
+      </select>
+    </div>
+    <div class="form-group"><label>신고 대상 서버명 (선택)</label><input type="text" id="reportTarget" placeholder="예: 롤 즐겜 파티방" /></div>
+    <div class="form-group"><label>내용</label><textarea id="reportDesc" placeholder="신고 내용을 자세히 적어주세요"></textarea></div>
+    <div class="form-group"><label>연락처 (답변 받을 이메일, 선택)</label><input type="text" id="reportContact" placeholder="example@email.com" /></div>
+    <p style="font-size:11px;color:var(--text3);margin-top:4px;">* 검토 후 조치됩니다. 허위 신고 시 이용이 제한될 수 있습니다.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeReportModal()">취소</button>
+      <button class="btn-submit" onclick="submitReport()">신고 / 문의 보내기</button>
+    </div>
+  </div>
+</div>
+
 <!-- 헤더 -->
 <div class="header">
   <div class="logo">파티<em>구함</em></div>
   <div class="header-right">
     <button class="reg-btn" onclick="openModal()">+ 서버 등록</button>
+    <button onclick="openReportModal()" style="background:transparent;border:1px solid var(--border2);color:var(--text2);padding:6px 13px;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;">신고 / 문의</button>
   </div>
 </div>
 
@@ -201,11 +226,12 @@ a{color:inherit;text-decoration:none;}
 <div class="footer">
   파티구함 · 게임 디스코드 서버 디렉토리<br>
   서버 등록 문의 · 광고 문의: jangshm@naver.com<br>
+  <button onclick="openReportModal()" style="background:transparent;border:none;color:var(--text3);font-size:12px;cursor:pointer;text-decoration:underline;font-family:inherit;margin-top:4px;">신고 / 문의하기</button><br>
   <span style="font-size:11px;margin-top:4px;display:block;">© 2025 파티구함. 디스코드와 무관한 독립 서비스입니다.</span>
 </div>
 
 <script>
-const GAMES=['전체','롤','배그','FC','로아','발로','오버','메이플','던파','스타','에이펙스','원신','블루아카','팰월드','엘든링','다크앤다커','CS2','e-sports'];
+const GAMES=['전체','롤','배그','FC','로아','발로','오버','메이플','던파','스타','에이펙스','원신','블루아카','팰월드','엘든링','다크앤다커','CS2','e-sports','스팀','기타'];
 const VIBES=['전체','일반계','디씨계','친목계','빡겜계','방송계'];
 const PURPOSES=['전체','파티 구함','같이 보기','친목','정보 공유','e-sports'];
 
@@ -279,6 +305,33 @@ function render(){
 const SHEET_URL='https://script.google.com/macros/s/AKfycbzhb0PeJuoY4IZ2NF6iegnBARNRf39nxVjkBfqz3MZD2B3dOLSC_X3zsxs5lbdGgiJ9/exec';
 
 function openModal(){document.getElementById('modal').classList.add('open');}
+function openReportModal(){document.getElementById('reportModal').classList.add('open');}
+function closeReportModal(){document.getElementById('reportModal').classList.remove('open');}
+async function submitReport(){
+  const type=document.getElementById('reportType').value;
+  const target=document.getElementById('reportTarget').value.trim();
+  const desc=document.getElementById('reportDesc').value.trim();
+  const contact=document.getElementById('reportContact').value.trim();
+  if(!desc){alert('신고 내용을 입력해주세요.');return;}
+  const btn=document.querySelector('#reportModal .btn-submit');
+  btn.textContent='전송 중...';btn.disabled=true;
+  try{
+    await fetch(SHEET_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'신고',reportType:type,target,desc,contact,date:new Date().toLocaleString('ko-KR'),name:'[신고]',game:'',purpose:'',vibe:'',link:'',tags:''})
+    });
+    alert('신고/문의가 접수됐어요. 검토 후 조치됩니다. 감사합니다 🙏');
+    closeReportModal();
+    document.getElementById('reportTarget').value='';
+    document.getElementById('reportDesc').value='';
+    document.getElementById('reportContact').value='';
+  }catch(e){
+    alert('오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+  }finally{
+    btn.textContent='신고 / 문의 보내기';btn.disabled=false;
+  }
+}
 function closeModal(){document.getElementById('modal').classList.remove('open');}
 
 async function submitForm(){
@@ -317,6 +370,7 @@ async function submitForm(){
 }
 
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('reportModal').addEventListener('click',function(e){if(e.target===this)closeReportModal();});
 
 async function loadServers(){
   const count=document.getElementById('countLabel');
@@ -324,7 +378,7 @@ async function loadServers(){
   try{
     const res=await fetch(SHEET_URL);
     const data=await res.json();
-    const iconMap={'롤':'🎮','배그':'🔫','FC':'⚽','로아':'⚔️','발로':'🎯','오버':'🛡️','메이플':'🍁','던파':'👊','스타':'🌟','에이펙스':'💥','원신':'🌙','블루아카':'🌸','팰월드':'🌿','엘든링':'🗡️','다크앤다커':'🔪','CS2':'🎯','e-sports':'🏆'};
+    const iconMap={'롤':'🎮','배그':'🔫','FC':'⚽','로아':'⚔️','발로':'🎯','오버':'🛡️','메이플':'🍁','던파':'👊','스타':'🌟','에이펙스':'💥','원신':'🌙','블루아카':'🌸','팰월드':'🌿','엘든링':'🗡️','다크앤다커':'🔪','CS2':'🎯','e-sports':'🏆','스팀':'🖥️','기타':'🎲'};
     servers=data.map(s=>({
       featured:false,
       icon:iconMap[s.game]||'🎮',
@@ -346,3 +400,4 @@ buildChips();loadServers();
 </script>
 </body>
 </html>
+
