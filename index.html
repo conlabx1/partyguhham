@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파티구함 — 게임 디스코드 서버 찾기</title>
+<meta name="description" content="게임별, 성향별, 목적별로 딱 맞는 디스코드 서버를 찾아보세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#ffffff;--bg2:#f7f7f8;--bg3:#f0f0f2;
+  --text:#111;--text2:#555;--text3:#999;
+  --border:#e0e0e0;--border2:#ccc;
+  --purple:#5B4FD4;--radius:10px;--radius-lg:14px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#1a1a1e;--bg2:#232328;--bg3:#2a2a30;--text:#f0f0f0;--text2:#aaa;--text3:#666;--border:#333;--border2:#444;}
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+
+/* HEADER */
+.header{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:50;}
+.logo{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:.5px;}
+.logo em{color:var(--purple);font-style:normal;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.reg-btn{background:var(--purple);color:#fff;border:none;padding:7px 15px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+.reg-btn:hover{opacity:.9;}
+
+/* AD */
+.ad-top{background:var(--bg2);border:1px dashed var(--border2);border-radius:var(--radius);height:60px;display:flex;align-items:center;justify-content:center;margin:16px 20px 0;color:var(--text3);font-size:11px;}
+
+/* SEARCH */
+.search-wrap{padding:14px 20px 0;}
+.search-row{display:flex;gap:8px;margin-bottom:13px;}
+.search-input{flex:1;padding:9px 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;background:var(--bg);color:var(--text);outline:none;font-family:inherit;}
+.search-input:focus{border-color:var(--purple);}
+.search-btn{background:var(--purple);color:#fff;border:none;padding:9px 18px;border-radius:var(--radius);font-size:13px;cursor:pointer;font-weight:500;font-family:inherit;}
+
+/* FILTERS */
+.filter-block{margin-bottom:10px;}
+.filter-label{font-size:10px;color:var(--text3);font-weight:500;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;}
+.chip-row{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{padding:5px 12px;border:1px solid var(--border2);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);transition:all .12s;white-space:nowrap;font-family:inherit;}
+.chip:hover:not(.active){background:var(--bg2);}
+.chip.active.game{background:var(--purple);color:#fff;border-color:var(--purple);}
+.chip.active.purpose[data-p="파티 구함"]{background:#EEE9FF;color:#5B4FD4;border-color:#CECBF6;}
+.chip.active.purpose[data-p="같이 보기"]{background:#E6F1FB;color:#185FA5;border-color:#B5D4F4;}
+.chip.active.purpose[data-p="친목"]{background:#EAF3DE;color:#3B6D11;border-color:#C0DD97;}
+.chip.active.purpose[data-p="정보 공유"]{background:#FAEEDA;color:#854F0B;border-color:#FAC775;}
+.chip.active.purpose[data-p="e-sports"]{background:#FCEBEB;color:#A32D2D;border-color:#F7C1C1;}
+.chip.active.vibe[data-v="일반계"]{background:#E6F1FB;color:#185FA5;border-color:#B5D4F4;}
+.chip.active.vibe[data-v="디씨계"]{background:#FAECE7;color:#993C1D;border-color:#F5C4B3;}
+.chip.active.vibe[data-v="친목계"]{background:#EAF3DE;color:#3B6D11;border-color:#C0DD97;}
+.chip.active.vibe[data-v="빡겜계"]{background:#FCEBEB;color:#A32D2D;border-color:#F7C1C1;}
+.chip.active.vibe[data-v="방송계"]{background:#FAEEDA;color:#854F0B;border-color:#FAC775;}
+
+.divider{height:1px;background:var(--border);margin:8px 20px 10px;}
+.count-label{font-size:12px;color:var(--text3);padding:0 20px 4px;}
+
+/* CARDS */
+.server-list{padding:0 20px;display:flex;flex-direction:column;gap:10px;}
+.server-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+.server-card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.server-card.featured{border-color:var(--purple);border-width:1.5px;}
+.server-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.server-info{flex:1;min-width:0;}
+.server-top{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;}
+.server-name{font-size:14px;font-weight:500;color:var(--text);}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;flex-shrink:0;}
+.game-badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;}
+.purpose-badge[data-p="파티 구함"]{background:#EEE9FF;color:#5B4FD4;}
+.purpose-badge[data-p="같이 보기"]{background:#E6F1FB;color:#185FA5;}
+.purpose-badge[data-p="친목"]{background:#EAF3DE;color:#3B6D11;}
+.purpose-badge[data-p="정보 공유"]{background:#FAEEDA;color:#854F0B;}
+.purpose-badge[data-p="e-sports"]{background:#FCEBEB;color:#A32D2D;}
+.vibe-badge[data-v="일반계"]{background:#E6F1FB;color:#185FA5;}
+.vibe-badge[data-v="디씨계"]{background:#FAECE7;color:#993C1D;}
+.vibe-badge[data-v="친목계"]{background:#EAF3DE;color:#3B6D11;}
+.vibe-badge[data-v="빡겜계"]{background:#FCEBEB;color:#A32D2D;}
+.vibe-badge[data-v="방송계"]{background:#FAEEDA;color:#854F0B;}
+.featured-badge{background:#EEE9FF;color:#5B4FD4;}
+.server-desc{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.55;}
+.tag-row{display:flex;gap:4px;flex-wrap:wrap;}
+.tag{font-size:11px;padding:2px 8px;border-radius:10px;border:1px solid var(--border);color:var(--text3);}
+.server-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.member-count{font-size:11px;color:var(--text3);white-space:nowrap;}
+.online-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#3DA85E;margin-right:3px;}
+.join-btn{background:transparent;border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;transition:all .12s;font-family:inherit;}
+.join-btn:hover{background:var(--purple);color:#fff;border-color:var(--purple);}
+.ad-inline{background:var(--bg2);border:1px dashed var(--border2);border-radius:var(--radius);height:52px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;}
+.empty{padding:60px 20px;text-align:center;color:var(--text3);font-size:14px;line-height:2.2;}
+.empty span{display:block;font-size:12px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:440px;border:1px solid var(--border);max-height:90vh;overflow-y:auto;}
+.modal h2{font-size:17px;font-weight:500;margin-bottom:16px;}
+.form-group{margin-bottom:12px;}
+.form-group label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;background:var(--bg);color:var(--text);outline:none;font-family:inherit;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--purple);}
+.form-group textarea{height:72px;resize:none;}
+.form-row{display:flex;gap:8px;}
+.form-row .form-group{flex:1;}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+.btn-cancel{background:transparent;border:1px solid var(--border2);color:var(--text2);padding:8px 16px;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;}
+.btn-submit{background:var(--purple);color:#fff;border:none;padding:8px 16px;border-radius:var(--radius);font-size:13px;cursor:pointer;font-weight:500;font-family:inherit;}
+.btn-submit:hover{opacity:.9;}
+
+/* FOOTER */
+.footer{margin-top:40px;padding:24px 20px;border-top:1px solid var(--border);background:var(--bg);text-align:center;color:var(--text3);font-size:12px;line-height:2;}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+  .server-card{flex-wrap:wrap;}
+  .server-meta{flex-direction:row;width:100%;justify-content:space-between;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- 서버 등록 모달 -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>디스코드 서버 등록하기</h2>
+    <div class="form-group"><label>서버 이름</label><input type="text" placeholder="예: LCK 같이보기 서버" /></div>
+    <div class="form-row">
+      <div class="form-group"><label>게임</label>
+        <select>
+          <option>리그 오브 레전드</option><option>배틀그라운드</option><option>FC 온라인</option>
+          <option>로스트아크</option><option>발로란트</option><option>오버워치</option>
+          <option>메이플스토리</option><option>던전앤파이터</option><option>스타크래프트</option>
+          <option>에이펙스 레전드</option><option>원신</option><option>블루아카이브</option>
+          <option>팰월드</option><option>엘든링</option><option>다크앤다커</option><option>CS2</option>
+          <option>e-sports (게임 무관)</option><option>기타</option>
+        </select>
+      </div>
+      <div class="form-group"><label>서버 목적</label>
+        <select><option>파티 구함</option><option>같이 보기</option><option>친목</option><option>정보 공유</option><option>e-sports</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label>커뮤 성향</label>
+      <select><option>일반계</option><option>디씨계</option><option>친목계</option><option>빡겜계</option><option>방송계</option></select>
+    </div>
+    <div class="form-group"><label>서버 소개 (한 줄)</label><textarea placeholder="어떤 서버인지 간단히 소개해주세요"></textarea></div>
+    <div class="form-group"><label>디스코드 초대링크</label><input type="text" placeholder="https://discord.gg/..." /></div>
+    <div class="form-group"><label>태그 (쉼표로 구분, 최대 5개)</label><input type="text" placeholder="LCK, 같이보기, 음성채팅, 20대" /></div>
+    <p style="font-size:11px;color:var(--text3);margin-top:4px;">* 등록 신청 후 검토를 거쳐 게시됩니다.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-submit" onclick="submitForm()">등록 신청</button>
+    </div>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<div class="header">
+  <div class="logo">파티<em>구함</em></div>
+  <div class="header-right">
+    <button class="reg-btn" onclick="openModal()">+ 서버 등록</button>
+  </div>
+</div>
+
+<!-- 상단 광고 -->
+<div class="ad-top">[ Google AdSense 상단 배너 — 728x90 ]</div>
+
+<!-- 검색 + 필터 -->
+<div class="search-wrap">
+  <div class="search-row">
+    <input class="search-input" id="searchInput" type="text" placeholder="서버명, 게임, 태그 검색..." oninput="render()" />
+    <button class="search-btn" onclick="render()">검색</button>
+  </div>
+  <div class="filter-block">
+    <div class="filter-label">게임</div>
+    <div class="chip-row" id="gameChips"></div>
+  </div>
+  <div class="filter-block">
+    <div class="filter-label">서버 목적</div>
+    <div class="chip-row" id="purposeChips"></div>
+  </div>
+  <div class="filter-block">
+    <div class="filter-label">커뮤 성향</div>
+    <div class="chip-row" id="vibeChips"></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="count-label" id="countLabel"></div>
+<div class="server-list" id="serverList"></div>
+<div class="empty" id="emptyMsg" style="display:none;">
+  조건에 맞는 서버가 없어요 😅
+  <span>서버를 직접 등록해보세요!</span>
+  <button class="reg-btn" style="margin-top:8px;" onclick="openModal()">+ 서버 등록</button>
+</div>
+
+<!-- 푸터 -->
+<div class="footer">
+  파티구함 · 게임 디스코드 서버 디렉토리<br>
+  서버 등록 문의 · 광고 문의: partyguhham@gmail.com<br>
+  <span style="font-size:11px;margin-top:4px;display:block;">© 2025 파티구함. 디스코드와 무관한 독립 서비스입니다.</span>
+</div>
+
+<script>
+const GAMES=['전체','롤','배그','FC','로아','발로','오버','메이플','던파','스타','에이펙스','원신','블루아카','팰월드','엘든링','다크앤다커','CS2','e-sports'];
+const VIBES=['전체','일반계','디씨계','친목계','빡겜계','방송계'];
+const PURPOSES=['전체','파티 구함','같이 보기','친목','정보 공유','e-sports'];
+
+const GC={
+  '롤':'#EEE9FF','배그':'#E6F1FB','FC':'#EAF3DE','로아':'#FAEEDA','발로':'#FAECE7',
+  '오버':'#E6F1FB','메이플':'#FBEAF0','던파':'#FAECE7','스타':'#E6F1FB',
+  '에이펙스':'#FCEBEB','원신':'#EEE9FF','블루아카':'#FBEAF0',
+  '팰월드':'#EAF3DE','엘든링':'#FAEEDA','다크앤다커':'#F1EFE8','CS2':'#FAECE7','e-sports':'#FCEBEB'
+};
+const GT={
+  '롤':'#5B4FD4','배그':'#185FA5','FC':'#3B6D11','로아':'#854F0B','발로':'#993C1D',
+  '오버':'#185FA5','메이플':'#993556','던파':'#993C1D','스타':'#185FA5',
+  '에이펙스':'#A32D2D','원신':'#5B4FD4','블루아카':'#993556',
+  '팰월드':'#3B6D11','엘든링':'#854F0B','다크앤다커':'#5F5E5A','CS2':'#993C1D','e-sports':'#A32D2D'
+};
+
+const servers=[
+  {featured:true,icon:'🎮',game:'롤',vibe:'일반계',purpose:'파티 구함',name:'롤 즐겜 파티방',desc:'욕설 없는 건전한 파티 서버. 칼바람부터 랭크까지 같이해요.',tags:['즐겜','칼바람','음성채팅'],members:'2,841',link:'https://discord.gg/example'},
+  {featured:false,icon:'📺',game:'롤',vibe:'일반계',purpose:'같이 보기',name:'LCK 같이보기',desc:'LCK, LCS, 롤드컵 등 e스포츠 방송 같이 봐요. 실시간 채팅 활발.',tags:['LCK','롤드컵','e스포츠'],members:'1,543',link:'https://discord.gg/example'},
+  {featured:false,icon:'🏆',game:'e-sports',vibe:'빡겜계',purpose:'e-sports',name:'한국 e스포츠 허브',desc:'롤, 발로, 오버워치 리그 전부 다룸. 경기 결과 알림 및 분석.',tags:['LCK','VCT','OWL','분석'],members:'3,201',link:'https://discord.gg/example'},
+  {featured:false,icon:'🔫',game:'배그',vibe:'빡겜계',purpose:'파티 구함',name:'배그 빡겜 스쿼드',desc:'치킨 먹으러 온 분들만. 매일 저녁 스크림 운영.',tags:['스크림','스쿼드','전략'],members:'1,203',link:'https://discord.gg/example'},
+  {featured:false,icon:'⚽',game:'FC',vibe:'디씨계',purpose:'정보 공유',name:'FC갤 공식 디코',desc:'FC 갤 이용자 모임. 이적시장 루머부터 빌드 토론까지.',tags:['이적시장','빌드','디씨'],members:'987',link:'https://discord.gg/example'},
+  {featured:false,icon:'📡',game:'발로',vibe:'일반계',purpose:'같이 보기',name:'VCT 같이보기 서버',desc:'VCT 퍼시픽, 챔피언스 같이 봐요. 경기 예측 이벤트도 해요.',tags:['VCT','발로란트','e스포츠'],members:'876',link:'https://discord.gg/example'},
+  {featured:false,icon:'⚔️',game:'로아',vibe:'빡겜계',purpose:'파티 구함',name:'로아 레이드 공략단',desc:'어비 이상 레이드 파티 빠르게 구해요. 공대장 경험자 우대.',tags:['레이드','어비','파티'],members:'3,412',link:'https://discord.gg/example'},
+  {featured:false,icon:'🎯',game:'발로',vibe:'친목계',purpose:'친목',name:'발로 친목 파티',desc:'골드~플 구간 같이 즐겜해요. 음채 필수, 욕설 금지.',tags:['음채','친목','골드-플'],members:'654',link:'https://discord.gg/example'},
+  {featured:false,icon:'🌸',game:'블루아카',vibe:'일반계',purpose:'정보 공유',name:'블루 아카이브 정보',desc:'공략, 이벤트 정보, 덕질까지. 선생님들 모두 환영.',tags:['공략','이벤트','덕질'],members:'1,102',link:'https://discord.gg/example'},
+  {featured:false,icon:'🌟',game:'스타',vibe:'디씨계',purpose:'같이 보기',name:'스타 ASL 같이보기',desc:'ASL, GSL 방송 같이 봐요. 스타1 래더도 같이 해요.',tags:['ASL','GSL','스타1'],members:'341',link:'https://discord.gg/example'},
+  {featured:false,icon:'💥',game:'에이펙스',vibe:'빡겜계',purpose:'파티 구함',name:'에이펙스 빡겜방',desc:'프레데터 도전 중. 파티 구하고 보이스 연습해요.',tags:['프레데터','파티'],members:'489',link:'https://discord.gg/example'},
+  {featured:false,icon:'🌿',game:'팰월드',vibe:'친목계',purpose:'친목',name:'팰월드 같이해요',desc:'멀티 서버 같이 운영해요. 초보 환영, 팰 교환도 해요.',tags:['멀티','팰교환','초보'],members:'762',link:'https://discord.gg/example'},
+  {featured:false,icon:'📺',game:'오버',vibe:'방송계',purpose:'같이 보기',name:'오버워치 리그 같이보기',desc:'OWL 및 국내 대회 방송 같이 봐요. 팀 응원방 채널 분리.',tags:['OWL','방송','응원'],members:'1,890',link:'https://discord.gg/example'},
+  {featured:false,icon:'🗡️',game:'엘든링',vibe:'일반계',purpose:'파티 구함',name:'엘든링 공략 길드',desc:'협동, 침입, 보스 공략. 방치형 분들도 질문 환영.',tags:['공략','협동','침입'],members:'533',link:'https://discord.gg/example'},
+  {featured:false,icon:'🔪',game:'다크앤다커',vibe:'빡겜계',purpose:'파티 구함',name:'다크앤다커 레이드',desc:'HR 탈출 위주. 파티 빠르게 구하고 전략 공유해요.',tags:['HR','탈출','파티'],members:'298',link:'https://discord.gg/example'},
+  {featured:false,icon:'🍁',game:'메이플',vibe:'일반계',purpose:'정보 공유',name:'메이플 정보 서버',desc:'보스 파티, 큐브 시세, 이벤트 정보 공유. 조용한 서버.',tags:['보스','시세','이벤트'],members:'2,200',link:'https://discord.gg/example'},
+];
+
+let aGame='전체',aVibe='전체',aPurpose='전체';
+
+function buildChips(){
+  document.getElementById('gameChips').innerHTML=GAMES.map(g=>`<button class="chip game${g===aGame?' active':''}" onclick="setF('game','${g}')">${g}</button>`).join('');
+  document.getElementById('purposeChips').innerHTML=PURPOSES.map(p=>`<button class="chip purpose${p===aPurpose?' active':''}" data-p="${p}" onclick="setF('purpose','${p}')">${p}</button>`).join('');
+  document.getElementById('vibeChips').innerHTML=VIBES.map(v=>`<button class="chip vibe${v===aVibe?' active':''}" data-v="${v}" onclick="setF('vibe','${v}')">${v}</button>`).join('');
+}
+
+function setF(type,val){
+  if(type==='game') aGame=val;
+  else if(type==='vibe') aVibe=val;
+  else aPurpose=val;
+  buildChips();render();
+}
+
+function render(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const list=document.getElementById('serverList');
+  list.innerHTML='';
+  let shown=0;
+  servers.forEach(s=>{
+    const mg=aGame==='전체'||s.game===aGame;
+    const mv=aVibe==='전체'||s.vibe===aVibe;
+    const mp=aPurpose==='전체'||s.purpose===aPurpose;
+    const mq=!q||s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.tags.some(t=>t.toLowerCase().includes(q))||s.game.includes(q);
+    if(mg&&mv&&mp&&mq){
+      if(shown===3){list.innerHTML+=`<div class="ad-inline">[ Google AdSense 인피드 광고 — 320x50 ]</div>`;}
+      const gc=GC[s.game]||'#EEE9FF',gt=GT[s.game]||'#5B4FD4';
+      list.innerHTML+=`<div class="server-card${s.featured?' featured':''}">
+        <div class="server-icon" style="background:${gc}">${s.icon}</div>
+        <div class="server-info">
+          <div class="server-top">
+            <span class="server-name">${s.name}</span>
+            <span class="badge game-badge" style="background:${gc};color:${gt}">${s.game}</span>
+            <span class="badge purpose-badge" data-p="${s.purpose}">${s.purpose}</span>
+            <span class="badge vibe-badge" data-v="${s.vibe}">${s.vibe}</span>
+            ${s.featured?'<span class="badge featured-badge">추천</span>':''}
+          </div>
+          <p class="server-desc">${s.desc}</p>
+          <div class="tag-row">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="server-meta">
+          <span class="member-count"><span class="online-dot"></span>${s.members}명</span>
+          <button class="join-btn" onclick="window.open('${s.link}','_blank')">입장</button>
+        </div>
+      </div>`;
+      shown++;
+    }
+  });
+  document.getElementById('countLabel').textContent=`총 ${shown}개 서버`;
+  document.getElementById('emptyMsg').style.display=shown===0?'block':'none';
+}
+
+function openModal(){document.getElementById('modal').classList.add('open');}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function submitForm(){alert('등록 신청 완료!\n검토 후 24시간 내 게시됩니다.');closeModal();}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+buildChips();render();
+</script>
+</body>
+</html>
